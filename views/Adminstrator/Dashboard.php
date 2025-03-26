@@ -6,7 +6,7 @@
     <title>Dashboard</title>
 </head>
 <body>
-    Dashboard
-    
+    <?php include '../Components/Header.php'; ?>
+    <div class="dashboard-container"></div>
 </body>
 </html>

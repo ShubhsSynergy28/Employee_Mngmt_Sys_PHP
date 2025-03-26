@@ -58,7 +58,6 @@ textarea {
     font-size: 16px;
     transition: border 0.3s;
 }
-
 input:focus,
 select:focus,
 textarea:focus {
@@ -72,6 +71,7 @@ textarea:focus {
     margin: 10px 0;
     display: flex;
     flex-wrap: wrap;
+    align-items: center;
     gap: 15px;
 }
 
@@ -105,7 +105,7 @@ button[type="submit"] {
     font-size: 16px;
     border-radius: var(--border-radius);
     cursor: pointer;
-    width: 100%;
+    width: 50%;
     margin-top: 20px;
     font-weight: 500;
     transition: background-color 0.3s;
@@ -113,6 +113,160 @@ button[type="submit"] {
 
 button[type="submit"]:hover {
     background-color: var(--secondary-color);
+}
+
+/* Multi-select hobbies styling */
+#hobbies {
+    height: auto;
+    padding: 0;
+}
+
+#hobbies option {
+    padding: 8px 12px;
+}
+
+#hobbies option:hover {
+    background-color: var(--primary-color);
+    color: white;
+}
+
+.selected-hobbies {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-top: 8px;
+    min-height: 40px;
+}
+
+.hobby-tag {
+    background-color: var(--light-gray);
+    padding: 5px 10px;
+    border-radius: 15px;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    font-size: 14px;
+}
+
+.hobby-tag button {
+    background: none;
+    border: none;
+    color: var(--accent-color);
+    cursor: pointer;
+    font-weight: bold;
+    padding: 0 0 0 5px;
+}
+.actionfield{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 10px;
+}
+.actionfield a{
+    background-color: var(--primary-color);
+    color: white;
+    border: none;
+    padding: 12px 20px;
+    font-size: 16px;
+    border-radius: var(--border-radius);
+    cursor: pointer;
+    width: 50%;
+    margin-top: 20px;
+    font-weight: 500;
+    transition: background-color 0.3s;
+    text-decoration: none;
+    text-align: center;
+}
+
+.actionfield a:hover {
+    background-color: var(--secondary-color);
+}
+
+
+/* Select2 Search Field Fixes */
+.select2-container--bootstrap-5 .select2-search--inline {
+    width: 100%;
+}
+
+.select2-container--bootstrap-5 .select2-search__field {
+    width: 100% !important;
+    margin: 0 !important;
+    padding: 0 8px !important;
+    border: none !important;
+    box-shadow: none !important;
+    background: transparent !important;
+    height: 38px;
+}
+
+.select2-container--bootstrap-5 .select2-search__field::placeholder {
+    color: #6c757d;
+    opacity: 1;
+}
+
+/* Fix for overflowing text in search */
+.select2-container--bootstrap-5 .select2-selection--multiple {
+    min-height: 45px;
+    overflow: hidden;
+}
+
+.select2-container--bootstrap-5 .select2-selection--multiple .select2-selection__rendered {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    width: 100%;
+    overflow: hidden;
+}
+
+/* Better tag styling */
+.select2-container--bootstrap-5 .select2-selection--multiple .select2-selection__choice {
+    display: flex;
+    align-items: center;
+    background: transparent;
+    border: 1px dotted var(--primary-color) !important; /* Blue border */
+    border-radius: 20px !important; /* More curved borders */
+    padding: 3px 10px !important;
+    margin: 3px;
+    color: var(--dark-gray);
+    font-size: 14px;
+    transition: all 0.2s ease;
+}
+
+/* Hover effect on tags */
+.select2-container--bootstrap-5 .select2-selection--multiple .select2-selection__choice:hover {
+    background-color: #e1f0fa; /* Light blue background on hover */
+    border-color: var(--secondary-color) !important;
+}
+
+/* Remove button styling */
+.select2-container--bootstrap-5 .select2-selection--multiple .select2-selection__choice__remove {
+    color: var(--accent-color);
+    margin-right: 5px;
+    font-weight: bold;
+    font-size: 16px;
+    line-height: 1;
+    transition: color 0.2s ease;
+}
+
+/* Remove button hover effect */
+.select2-container--bootstrap-5 .select2-selection--multiple .select2-selection__choice__remove:hover {
+    color: #c0392b;
+}
+
+/* Active state when clicking */
+.select2-container--bootstrap-5 .select2-selection--multiple .select2-selection__choice:active {
+    transform: scale(0.98);
+}
+
+/* Focused input field */
+.select2-container--bootstrap-5.select2-container--focus .select2-selection {
+    border-color: var(--primary-color);
+    box-shadow: 0 0 0 2px rgba(52, 152, 219, 0.2);
+}
+
+/* Dropdown item hover */
+.select2-container--bootstrap-5 .select2-results__option--highlighted {
+    background-color: var(--primary-color) !important;
+    color: white !important;
 }
 
 /* Responsive adjustments */

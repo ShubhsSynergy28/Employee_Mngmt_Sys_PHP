@@ -1,3 +1,10 @@
+<?php
+// Include the database configuration
+include '../../config/config.php';
+include '../../controllers/EmployeeController.php';
+include '../Components/Notification.php';
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -5,10 +12,13 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Add Employee</title>
     <link rel="stylesheet" href="../../assets/Styles/AddEmp.css">
+    <!-- Add these to your <head> section -->
+<link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/select2-bootstrap-5-theme@1.3.0/dist/select2-bootstrap-5-theme.min.css" />
 </head>
 <body>
     <h1>Add Employee</h1>
-    <form action="process_add_emp.php" method="POST" enctype="multipart/form-data">
+    <form action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" method="POST" enctype="multipart/form-data">
         <label for="firstname">First Name:</label>
         <input type="text" id="firstname" name="firstname" required>
 
@@ -20,28 +30,17 @@
 
         <label>Education:</label>
         <div class="checkbox-group">
-            <input type="checkbox" id="highschool" name="education[]" value="High School">
-            <label for="highschool">High School</label>
-            
-            <input type="checkbox" id="bachelor" name="education[]" value="Bachelor's">
-            <label for="bachelor">Bachelor's</label>
-            
-            <input type="checkbox" id="master" name="education[]" value="Master's">
-            <label for="master">Master's</label>
-            
-            <input type="checkbox" id="phd" name="education[]" value="PhD">
-            <label for="phd">PhD</label>
+            <?php
+            // Fetch education levels from database
+            include '../../assets/Scripts/FetchEdu.php';
+            ?>
         </div>
-
         <label for="hobbies">Hobbies:</label>
-        <select id="hobbies" name="hobbies">
-            <option value="Reading">Reading</option>
-            <option value="Traveling">Traveling</option>
-            <option value="Cooking">Cooking</option>
-            <option value="Sports">Sports</option>
-            <option value="Music">Music</option>
-        </select>
-
+<select id="hobbies" name="hobbies[]" multiple class="form-select">
+    <?php
+    include '../../assets/Scripts/FetchHobbies.php';
+    ?>
+</select>
         <label for="birthdate">Birth Date:</label>
         <input type="date" id="birthdate" name="birthdate" required>
 
@@ -62,8 +61,30 @@
 
         <label for="description">Description:</label>
         <textarea id="description" name="description" rows="4" cols="50" required></textarea>
-
-        <button type="submit">Submit</button>
+        
+        <div class="actionfield">
+            <button type="submit">Submit</button>
+            <a href="./Dashboard.php">Cancel</a>
+        </div>
     </form>
+
+    <script src="../../assets/Scripts/AddEmp.js"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+
+<script>
+$(document).ready(function() {
+    $('#hobbies').select2({
+        theme: 'bootstrap-5',
+        placeholder: "Select hobbies",
+        allowClear: true,
+        width: '100%'
+    });
+});
+</script>
 </body>
 </html>
+
+<?php
+$conn->close();
+?>

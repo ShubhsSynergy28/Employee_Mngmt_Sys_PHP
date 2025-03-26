@@ -97,12 +97,29 @@ class AuthController {
             $stmt->close();
         }
     }
+
+    function Logout(){
+        session_unset();
+        session_destroy();
+        header("Location: ../views/Auth/login.php");
+    }
+    
 }
 
 $authController = new AuthController();
-if (strpos($_SERVER['REQUEST_URI'], 'register.php') !== false) {
+if (isset($_GET['action']) || isset($_POST['action'])) {
+    $action = $_GET['action'] ?? $_POST['action'];
+    
+    switch ($action) {
+        case 'logout':
+            $authController->logout();
+            break;
+    }
+} 
+elseif (strpos($_SERVER['REQUEST_URI'], 'register.php') !== false) {
     $authController->register();
 } elseif (strpos($_SERVER['REQUEST_URI'], 'login.php') !== false) {
     $authController->login();
 }
+
 ?>
