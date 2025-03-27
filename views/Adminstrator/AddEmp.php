@@ -1,9 +1,18 @@
 <?php
+session_start();
+if (!isset($_SESSION['user_id'])) {
+    header("Location: ../../views/Auth/login.php");
+    exit();
+}
+?>
+
+<?php
 // Include the database configuration
 include '../../config/config.php';
 include '../../controllers/EmployeeController.php';
 include '../Components/Notification.php';
 ?>
+
 
 <!DOCTYPE html>
 <html lang="en">
