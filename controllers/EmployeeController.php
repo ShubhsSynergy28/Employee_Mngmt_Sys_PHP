@@ -124,10 +124,12 @@ class EmployeeController{
             }
         }
 
-        public function ViewEmployeeDetailswithPagination() {
+        public function ViewEmployeeDetailswithPagination($Length, $multiplier) {
             $errors = [];
             global $conn, $notification, $notificationClass;
             
+            $offset = $Length * $multiplier;
+    
             $query = "SELECT 
                         e.Eid,
                         e.EName, 
@@ -143,20 +145,21 @@ class EmployeeController{
                       LEFT JOIN educations ed ON ee.education_id = ed.Eduid
                       LEFT JOIN employee_hobbies eh ON e.Eid = eh.employee_id
                       LEFT JOIN hobbies h ON eh.hobby_id = h.Hid
-                      GROUP BY e.Eid";
+                      GROUP BY e.Eid
+                      LIMIT ? OFFSET ?";
             
             try {
                 $stmt = $conn->prepare($query);
                 if (!$stmt) {
                     throw new Exception("Prepare failed: " . $conn->error);
                 }
-                
+                $stmt->bind_param("ii", $Length, $offset);
                 $stmt->execute();
                 $result = $stmt->get_result();
                 $employees = $result->fetch_all(MYSQLI_ASSOC);
                 
-                return $employees;
                 $stmt->close();
+                return $employees;
             } catch (Exception $e) {
                 error_log("Database error: " . $e->getMessage());
                 return [];
@@ -204,31 +207,194 @@ class EmployeeController{
 
         }
 
+        public function getEmployeeEducations($employeeId) {
+            global $conn;
+            
+            $query = "SELECT education_id FROM employee_educations WHERE employee_id = ?";
+            $stmt = $conn->prepare($query);
+            $stmt->bind_param("i", $employeeId);
+            $stmt->execute();
+            $result = $stmt->get_result();
+            
+            $educations = [];
+            while ($row = $result->fetch_assoc()) {
+                $educations[] = $row;
+            }
+            
+            $stmt->close();
+            return $educations;
+        }
+        
+        public function getEmployeeHobbies($employeeId) {
+            global $conn;
+            
+            $query = "SELECT hobby_id FROM employee_hobbies WHERE employee_id = ?";
+            $stmt = $conn->prepare($query);
+            $stmt->bind_param("i", $employeeId);
+            $stmt->execute();
+            $result = $stmt->get_result();
+            
+            $hobbies = [];
+            while ($row = $result->fetch_assoc()) {
+                $hobbies[] = $row;
+            }
+            
+            $stmt->close();
+            return $hobbies;
+        }
+        
         public function UpdateEmployee($Eid) {
             $errors = [];
             global $conn, $notification, $notificationClass;
-            $query= "UPDATE employees SET EName = ?, Ephone = ?, Ebirth_date = ?, Egender = ?, Edescription = ?, Efile_path = ? WHERE Eid = ?";
-            $EmployeeName = $_POST['firstname']." ".$_POST['lastname'];
-
+            
+            if ($_SERVER["REQUEST_METHOD"] != "POST") {
+                return false;
+            }
+            
+            // Collect form data
+            $EmployeeName = $_POST['firstname'] . " " . $_POST['lastname'];
+            $phnNO = $_POST['phone'];
+            $educations = $_POST['education'] ?? [];
+            $hobbies = $_POST['hobbies'] ?? [];
+            $birthdate = $_POST['birthdate'];
+            $Gender = $_POST['gender'];
+            $Description = $_POST['description'];
+            
+            // File upload handling
+            $file_path = $_POST['existing_file'] ?? '';
+            
+            if (isset($_FILES['file']) && $_FILES['file']['error'] == UPLOAD_ERR_OK) {
+                $uploadDir = '../../Uploads/';
+                if (!file_exists($uploadDir)) {
+                    mkdir($uploadDir, 0777, true);
+                }
+                
+                // Delete old file if exists
+                if (!empty($file_path) && file_exists($uploadDir . $file_path)) {
+                    @unlink($uploadDir . $file_path);
+                }
+                
+                $filename = uniqid() . '_' . basename($_FILES['file']['name']);
+                $targetPath = $uploadDir . $filename;
+                
+                $allowedTypes = ['pdf', 'jpg', 'jpeg', 'png'];
+                $fileType = strtolower(pathinfo($targetPath, PATHINFO_EXTENSION));
+                
+                if (in_array($fileType, $allowedTypes)) {
+                    if (move_uploaded_file($_FILES['file']['tmp_name'], $targetPath)) {
+                        $file_path = $filename;
+                    } else {
+                        $notification = "Failed to upload file";
+                        $notificationClass = "error";
+                        return false;
+                    }
+                } else {
+                    $notification = "Only PDF, JPG, JPEG, PNG files are allowed";
+                    $notificationClass = "error";
+                    return false;
+                }
+            }
+            
+            // Begin transaction
+            $conn->begin_transaction();
+            
+            try {
+                // Update basic employee info
+                $stmt = $conn->prepare("UPDATE employees SET EName=?, Ephone=?, Ebirth_date=?, Egender=?, Edescription=?, Efile_path=? WHERE Eid=?");
+                $stmt->bind_param("ssssssi", $EmployeeName, $phnNO, $birthdate, $Gender, $Description, $file_path, $Eid);
+                $stmt->execute();
+                $stmt->close();
+                
+                // Update education levels - first delete existing, then insert new
+                $stmt = $conn->prepare("DELETE FROM employee_educations WHERE employee_id = ?");
+                $stmt->bind_param("i", $Eid);
+                $stmt->execute();
+                $stmt->close();
+                
+                $stmt = $conn->prepare("INSERT INTO employee_educations (employee_id, education_id) VALUES (?, ?)");
+                foreach ($educations as $education_id) {
+                    $education_id = (int)$education_id;
+                    $stmt->bind_param("ii", $Eid, $education_id);
+                    $stmt->execute();
+                }
+                $stmt->close();
+                
+                // Update hobbies - first delete existing, then insert new
+                $stmt = $conn->prepare("DELETE FROM employee_hobbies WHERE employee_id = ?");
+                $stmt->bind_param("i", $Eid);
+                $stmt->execute();
+                $stmt->close();
+                
+                $stmt = $conn->prepare("INSERT INTO employee_hobbies (employee_id, hobby_id) VALUES (?, ?)");
+                foreach ($hobbies as $hobby_id) {
+                    $hobby_id = (int)$hobby_id;
+                    $stmt->bind_param("ii", $Eid, $hobby_id);
+                    $stmt->execute();
+                }
+                $stmt->close();
+                
+                // Commit transaction
+                $conn->commit();
+                return true;
+            } catch (Exception $e) {
+                // Rollback on error
+                $conn->rollback();
+                $notification = "Error updating employee: " . $e->getMessage();
+                $notificationClass = "error";
+                error_log("Database error: " . $e->getMessage());
+                return false;
+            }
         }
         public function DeleteEmployee($Eid) {
             $errors = [];
             global $conn, $notification, $notificationClass;
-            $query = "DELETE FROM employees WHERE Eid = ?";
-            try{
-                $stmt = $conn->prepare($query);
-                if(!$stmt){
-                    throw new Exception("Prepare failed: " . $conn->error);
-                }
+            
+            // First get the file path to delete the associated file
+            $fileQuery = "SELECT Efile_path FROM employees WHERE Eid = ?";
+            $fileStmt = $conn->prepare($fileQuery);
+            $fileStmt->bind_param("i", $Eid);
+            $fileStmt->execute();
+            $result = $fileStmt->get_result();
+            $employee = $result->fetch_assoc();
+            $fileStmt->close();
+            
+            $conn->begin_transaction();
+            
+            try {
+                // First delete from child tables
+                $stmt = $conn->prepare("DELETE FROM employee_educations WHERE employee_id = ?");
                 $stmt->bind_param("i", $Eid);
                 $stmt->execute();
                 $stmt->close();
+                
+                $stmt = $conn->prepare("DELETE FROM employee_hobbies WHERE employee_id = ?");
+                $stmt->bind_param("i", $Eid);
+                $stmt->execute();
+                $stmt->close();
+                
+                // Then delete from main table
+                $stmt = $conn->prepare("DELETE FROM employees WHERE Eid = ?");
+                $stmt->bind_param("i", $Eid);
+                $stmt->execute();
+                $stmt->close();
+                
+                $conn->commit();
+                
+                // Delete the associated file
+                if (!empty($employee['Efile_path'])) {
+                    $uploadDir = '../../Uploads/';
+                    @unlink($uploadDir . $employee['Efile_path']);
+                }
+                
                 $notification = "Employee deleted successfully";
                 $notificationClass = "success";
-            }
-            catch(Exception $e){
+                return true;
+            } catch (Exception $e) {
+                $conn->rollback();
+                $notification = "Error deleting employee: " . $e->getMessage();
+                $notificationClass = "error";
                 error_log("Database error: " . $e->getMessage());
-                return [];
+                return false;
             }
         }
 
@@ -239,13 +405,11 @@ if(strpos($_SERVER['REQUEST_URI'], 'AddEmp.php') !== false){
     $EmployeeController->CreateEmployee();
 }
 
-elseif(strpos($_SERVER['REQUEST_URI'], 'Dashboard.php') !== false){
-
-    // $EmployeeController->ViewEmployeeDetailswithPagination();
-
+elseif (strpos($_SERVER['REQUEST_URI'], 'ViewEmployee.php') !== false && isset($_GET['id'])) {
+    // The view page will handle the display, no need to call controller here
 }
-elseif(strpos($_SERVER['REQUEST_URI'], 'Dashboard.php') !== false){
-    $EmployeeController->DeleteEmployee();
+elseif (strpos($_SERVER['REQUEST_URI'], 'DeleteEmployee.php') !== false && isset($_GET['id'])) {
+    $EmployeeController->DeleteEmployee((int)$_GET['id']);
 }
 
 

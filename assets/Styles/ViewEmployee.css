@@ -1,0 +1,35 @@
+.employee-details-container {
+    max-width: 800px;
+    margin: 20px auto;
+    padding: 20px;
+    background: #fff;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0,0,0,0.1);
+}
+.detail-row {
+    display: flex;
+    margin-bottom: 15px;
+}
+.detail-label {
+    font-weight: bold;
+    width: 150px;
+}
+.detail-value {
+    flex: 1;
+}
+.file-preview {
+    margin-top: 20px;
+}
+.file-preview img {
+    max-width: 100%;
+    max-height: 300px;
+}
+.back-btn {
+    display: inline-block;
+    margin-top: 20px;
+    padding: 8px 15px;
+    background: #4CAF50;
+    color: white;
+    text-decoration: none;
+    border-radius: 4px;
+}

@@ -4,10 +4,23 @@ if (!isset($_SESSION['user_id'])) {
     header("Location: ../../views/Auth/login.php");
     exit();
 }
+// Display notification if exists
+if (isset($_SESSION['notification'])) {
+    $notification = $_SESSION['notification'];
+    $notificationClass = $_SESSION['notificationClass'];
+    unset($_SESSION['notification']);
+    unset($_SESSION['notificationClass']);
+}
+include '../Components/Notification.php';
 include '../../config/config.php';
-include '../../controllers/EmployeeController.php';
+include '../../controllers/EmployeeController.php';$currentPage = isset($_GET['page']) ? max(1, (int)$_GET['page']) : 1;
+$recordsPerPage = isset($_GET['per_page']) ? (int)$_GET['per_page'] : 10;
+$multiplier = $currentPage - 1; // Page 1 has multiplier 0, Page 2 has 1, etc.
+
 $employeeController = new EmployeeController();
-$employees = $employeeController->ViewEmployeeDetailswithPagination();
+$employees = $employeeController->ViewEmployeeDetailswithPagination($recordsPerPage, $multiplier);
+$totalRecords = $conn->query("SELECT COUNT(*) FROM employees")->fetch_row()[0];
+$totalPages = ceil($totalRecords / $recordsPerPage);
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -21,7 +34,7 @@ $employees = $employeeController->ViewEmployeeDetailswithPagination();
 </head>
 <body>
     <?php include '../Components/Header.php'; ?>
-    
+    <?php include '../Components/Notification.php'; ?>
     <div class="dashboard-container">
         <!-- User Info Section -->
         <div class="user-info">
@@ -65,14 +78,13 @@ $employees = $employeeController->ViewEmployeeDetailswithPagination();
                             <td>
                                 <div style="display: flex; gap: 5px;">
                                     <a href="ViewEmployee.php?id=<?= $employee['Eid'] ?>" class="action-btn view-btn">
-                                        <i class="fas fa-eye"></i> View
+                                        <i class="fas fa-eye"></i>
                                     </a>
                                     <a href="EditEmployee.php?id=<?= $employee['Eid'] ?>" class="action-btn edit-btn">
-                                        <i class="fas fa-edit"></i> Edit
+                                        <i class="fas fa-edit"></i>
                                     </a>
-                                    <a href="DeleteEmployee.php?id=<?= $employee['Eid'] ?>" class="action-btn delete-btn" 
-                                       onclick="return confirm('Are you sure you want to delete this employee?')">
-                                        <i class="fas fa-trash"></i> Delete
+                                    <a href="../../utils/DeleteEmployee.php?id=<?= $employee['Eid'] ?>" class="action-btn delete-btn" >
+                                        <i class="fas fa-trash"></i>
                                     </a>
                                 </div>
                             </td>
@@ -92,48 +104,44 @@ $employees = $employeeController->ViewEmployeeDetailswithPagination();
             <div class="table-controls">
                 <div class="records-per-page">
                     <span>Show</span>
-                    <select id="recordsPerPage">
-                        <option value="5">5</option>
-                        <option value="10">10</option>
-                        <option value="15">15</option>
-                        <option value="20">20</option>
-                    </select>
+                    <select id="recordsPerPage" onchange="updateRecordsPerPage(this.value)">
+                <option value="5" <?= $recordsPerPage == 5 ? 'selected' : '' ?>>5</option>
+                <option value="10" <?= $recordsPerPage == 10 ? 'selected' : '' ?>>10</option>
+                <option value="15" <?= $recordsPerPage == 15 ? 'selected' : '' ?>>15</option>
+                <option value="20" <?= $recordsPerPage == 20 ? 'selected' : '' ?>>20</option>
+            </select>
                     <span>entries</span>
                 </div>
             </div>
             <div class="pagination-control">
 
-                <form action="PageUp.php" method="POST">
-                    <button>
-                        <i class="fas fa-angle-double-left"></i>
-                    </button>
-                </form>
-                <form action="PageDown.php">
-                    <button>
-                        <i class="fas fa-angle-double-right"></i>
-                    </button>
-                </form>
+            <?php if ($currentPage > 1): ?>
+            <a href="?page=1&per_page=<?= $recordsPerPage ?>"><i class="fas fa-angle-double-left"></i></a>
+            <a href="?page=<?= $currentPage-1 ?>&per_page=<?= $recordsPerPage ?>"><i class="fas fa-angle-left"></i></a>
+        <?php endif; ?>
+        
+        <?php 
+        // Show page numbers
+        $startPage = max(1, $currentPage - 2);
+        $endPage = min($totalPages, $currentPage + 2);
+        
+        for ($i = $startPage; $i <= $endPage; $i++): ?>
+            <a href="?page=<?= $i ?>&per_page=<?= $recordsPerPage ?>" 
+               class="<?= $i == $currentPage ? 'active' : '' ?>">
+                <?= $i ?>
+            </a>
+        <?php endfor; ?>
+        
+        <?php if ($currentPage < $totalPages): ?>
+            <a href="?page=<?= $currentPage+1 ?>&per_page=<?= $recordsPerPage ?>"><i class="fas fa-angle-right"></i></a>
+            <a href="?page=<?= $totalPages ?>&per_page=<?= $recordsPerPage ?>"><i class="fas fa-angle-double-right"></i></a>
+        <?php endif; ?>
+
             </div>
         </div>
     </div>
     
-    <script>
-        // Delete confirmation
-        document.querySelectorAll('.delete-btn').forEach(btn => {
-            btn.addEventListener('click', function(e) {
-                if (!confirm('Are you sure you want to delete this employee?')) {
-                    e.preventDefault();
-                }
-            });
-        });
-        
-        // Records per page change handler
-        document.getElementById('recordsPerPage').addEventListener('change', function() {
-            const recordsPerPage = this.value;
-            // You'll need to implement the logic to reload with new page size
-            // This would typically involve a page reload with a parameter
-            window.location.href = `?per_page=${recordsPerPage}`;
-        });
+    <script src="../../assets/Scripts/Dashboard.js"></script>      
     </script>
 </body>
 </html>

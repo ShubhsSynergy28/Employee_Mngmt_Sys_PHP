@@ -1,0 +1,14 @@
+.current-file {
+    margin: 8px 0;
+    padding: 8px;
+    background-color: #f8f9fa;
+    border-radius: var(--border-radius);
+    border: 1px dashed #ddd;
+    font-size: 14px;
+    color: #666;
+}
+
+.current-file small {
+    display: block;
+    margin-bottom: 5px;
+}
