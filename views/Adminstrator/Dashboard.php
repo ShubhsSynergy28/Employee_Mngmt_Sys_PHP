@@ -14,7 +14,7 @@ if (isset($_SESSION['notification'])) {
 include '../Components/Notification.php';
 include '../../config/config.php';
 include '../../controllers/EmployeeController.php';$currentPage = isset($_GET['page']) ? max(1, (int)$_GET['page']) : 1;
-$recordsPerPage = isset($_GET['per_page']) ? (int)$_GET['per_page'] : 10;
+$recordsPerPage = isset($_GET['per_page']) ? (int)$_GET['per_page'] : 5;
 $multiplier = $currentPage - 1; // Page 1 has multiplier 0, Page 2 has 1, etc.
 
 $employeeController = new EmployeeController();

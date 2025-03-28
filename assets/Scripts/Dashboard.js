@@ -10,9 +10,9 @@ document.querySelectorAll('.delete-btn').forEach(btn => {
 });
 
 // Records per page change handler
-document.getElementById('recordsPerPage').addEventListener('change', function() {
-    const recordsPerPage = this.value;
-    // You'll need to implement the logic to reload with new page size
-    // This would typically involve a page reload with a parameter
-    window.location.href = `?per_page=${recordsPerPage}`;
-});
+// document.getElementById('recordsPerPage').addEventListener('change', function() {
+//     const recordsPerPage = this.value;
+//     // You'll need to implement the logic to reload with new page size
+//     // This would typically involve a page reload with a parameter
+//     window.location.href = `?per_page=${recordsPerPage}`;
+// });

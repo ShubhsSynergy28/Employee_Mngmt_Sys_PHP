@@ -1,14 +1,27 @@
+/* File download link styles */
 .current-file {
-    margin: 8px 0;
-    padding: 8px;
+    margin: 10px 0;
+    padding: 10px;
     background-color: #f8f9fa;
-    border-radius: var(--border-radius);
+    border-radius: 4px;
     border: 1px dashed #ddd;
-    font-size: 14px;
-    color: #666;
 }
 
-.current-file small {
-    display: block;
-    margin-bottom: 5px;
+.file-download-link {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    color: gray !important;
+    text-decoration: none;
+    font-size: 14px;
+    transition: color 0.3s;
+}
+
+.file-download-link:hover {
+    color: grey;
+    /* text-decoration: underline; */
+}
+
+.file-download-link i {
+    font-size: 16px;
 }

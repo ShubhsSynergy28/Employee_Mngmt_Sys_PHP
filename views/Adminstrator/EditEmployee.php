@@ -69,6 +69,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['update_employee'])) {
     <link rel="stylesheet" href="../../assets/Styles/EditEmp.css">
     <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/select2-bootstrap-5-theme@1.3.0/dist/select2-bootstrap-5-theme.min.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
 </head>
 <body>
     <h1>Edit Employee</h1>
@@ -86,7 +87,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['update_employee'])) {
         <div class="checkbox-group">
             <?php
             // Fetch education levels from database
-            include '../../assets/Scripts/FetchEdu.php';
+            include '../../utils/FetchEdu.php';
             
             // Mark checked educations
             echo '<script>document.addEventListener("DOMContentLoaded", function() {';
@@ -100,7 +101,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['update_employee'])) {
         <label for="hobbies">Hobbies:</label>
         <select id="hobbies" name="hobbies[]" multiple class="form-select">
             <?php
-            include '../../assets/Scripts/FetchHobbies.php';
+            include '../../utils/FetchHobbies.php';
             ?>
         </select>
 
@@ -110,11 +111,13 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['update_employee'])) {
         <label for="file">Upload File:</label>
         <input type="file" id="file" name="file">
         <?php if ($file_path): ?>
-            <div class="current-file">
-                <small>Current file: <?= htmlspecialchars($file_path) ?></small>
-                <input type="hidden" name="existing_file" value="<?= htmlspecialchars($file_path) ?>">
-            </div>
-        <?php endif; ?>
+    <div class="current-file">
+        <a href="../../Uploads/<?= htmlspecialchars($file_path) ?>" class="file-download-link" download >
+            <i class="fas fa-file-download"></i> Download your file: <?= htmlspecialchars($file_path) ?>
+        </a>
+        <input type="hidden" name="existing_file" value="<?= htmlspecialchars($file_path) ?>">
+    </div>
+<?php endif; ?>
 
         <label>Gender:</label>
         <div class="radio-group">

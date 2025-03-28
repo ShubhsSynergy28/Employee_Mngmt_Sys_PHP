@@ -7,7 +7,7 @@ class AuthController {
     public function register(){
         global $notification, $notificationClass, $conn;
         if ($_SERVER["REQUEST_METHOD"] == "POST") {
-            $username = $_POST['reg_username'];
+            $username = ucfirst(strtolower(trim($_POST['reg_username'])));
             $email = $_POST['reg_email'];
             $password = $_POST['reg_password'];
             $passwordConf = $_POST['reg_passwordConf'];

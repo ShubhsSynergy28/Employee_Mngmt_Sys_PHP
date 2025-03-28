@@ -7,7 +7,15 @@
     --shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
     --transition: all 0.3s ease;
 }
+html,body{
 
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    width: 100vw;
+
+}
 * {
     margin: 0;
     padding: 0;
@@ -126,6 +134,13 @@ nav ul li a:hover::after {
     font-size: 1rem;
 }
 
+.link-to-home-in-logo{
+    text-decoration: none;
+    /* color: white; */
+}
+.container a{
+    text-decoration: none;
+}
 
 /* Responsive design */
 @media (max-width: 768px) {
