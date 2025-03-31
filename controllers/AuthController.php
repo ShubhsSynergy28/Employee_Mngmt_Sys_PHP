@@ -10,9 +10,9 @@ class AuthController {
         session_start();
         global $notification, $notificationClass, $conn;
         if ($_SERVER["REQUEST_METHOD"] == "POST") {
-            $username = ucfirst(strtolower(trim($_POST['reg_username'])));
-            $email = trim($_POST['reg_email']);
-            $password = trim($_POST['reg_password']);
+            $username = ucfirst(strtolower(htmlspecialchars(trim($_POST['reg_username']),ENT_QUOTES, 'UTF-8')));
+            $email = htmlspecialchars(trim($_POST['reg_email']),ENT_QUOTES, 'UTF-8');
+            $password = htmlspecialchars(trim($_POST['reg_password']),ENT_QUOTES, 'UTF-8');
             $passwordConf = trim($_POST['reg_passwordConf']);
 
             //CHECK IF FIELDS ARE EMPTY
@@ -79,8 +79,8 @@ class AuthController {
     public function login() {
         global $notification, $notificationClass, $conn;
         if ($_SERVER["REQUEST_METHOD"] == "POST") {
-            $email = $_POST['log_email'];
-            $password = $_POST['log_password'];
+            $email = htmlspecialchars($_POST['log_email'],ENT_QUOTES, 'UTF-8');
+            $password = htmlspecialchars($_POST['log_password'],ENT_QUOTES, 'UTF-8');
 
             $stmt = $conn->prepare("SELECT id, username, password FROM users WHERE email = ?");
             $stmt->bind_param("s", $email);
