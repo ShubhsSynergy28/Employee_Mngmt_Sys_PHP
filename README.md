@@ -3,6 +3,14 @@
 ## Overview
 The **Employee Management System** is a web-based application built using **PHP, MySQL, HTML, CSS, and JavaScript**. It helps organizations efficiently manage employee records, including personal details, job roles, attendance, and payroll.
 
+![Register](assets/Multimedia/Register.png)
+![Login](assets/Multimedia/Login.png)
+![Dashboard](assets/Multimedia/Dashboard.png)
+![Dashboard](assets/Multimedia/Dashboard2.png)
+![Add_Employee](assets/Multimedia/AddEmployee.png)
+![View_Employee](assets/Multimedia/ViewEmployee.png)
+![Edit_Employee](assets/Multimedia/EditEmployee.png)
+
 ## Features
 - **Employee Registration & Management**: Add, edit, and delete employee records.
 
