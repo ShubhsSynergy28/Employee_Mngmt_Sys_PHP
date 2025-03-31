@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Mar 31, 2025 at 08:27 AM
+-- Generation Time: Mar 31, 2025 at 12:29 PM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -63,7 +63,7 @@ CREATE TABLE `employees` (
 --
 
 INSERT INTO `employees` (`Eid`, `EName`, `Ephone`, `Ebirth_date`, `Egender`, `Edescription`, `Efile_path`) VALUES
-(1, 'Shubham Nakashe', '9730610621', '2002-05-28', 'Male', 'Hey there i am shubham Nakashe here, a Computer Engineer.', '67e53435a865f_sample.pdf'),
+(1, 'Shubham Nakashe', '1234567859', '2002-05-28', 'Male', 'Hey there i am shubham Nakashe here, a Computer Engineer.', '67e53435a865f_sample.pdf'),
 (3, 'Dharmesh Marathe', '0000000000', '2002-05-29', 'Male', 'Hey there its me Dharmesh marathe. I am a Full stack Computer Engineer. How are you ?', '67e4f036b8a0d_download.jpg'),
 (5, 'Om Achrekar', '0000000000', '2002-10-22', 'Male', 'Hey there its me OM Achrekar, I am a Full stack dev + AI Engineer. Above everything i am damnnn Depressed person fr.😑 i like being depressed as it is my 1st job of being depressed.  I love being depressed 😂. ', '67e4f6eddd761_download.jpg'),
 (7, 'Aarya  Padte', '0000000000', '2005-10-19', 'Female', 'Hey i am Aarya here, Nice to meet you. I am a Vet doctor in making.', '67e534ec6e81a_sample.pdf'),
@@ -81,9 +81,7 @@ INSERT INTO `employees` (`Eid`, `EName`, `Ephone`, `Ebirth_date`, `Egender`, `Ed
 (25, 'Ashwini Sutar', '0000000000', '1997-08-03', 'Female', 'Hey i am Ashwini', '67e5398f64a6d_sample.pdf'),
 (26, 'Abhay Singh', '0000000000', '2001-05-24', 'Male', 'Hey i am Abay.', '67e539fd3645a_sample.pdf'),
 (27, 'Darshal Verma', '0000000000', '2001-04-22', 'Male', 'Hey i am Darsheel', '67e53a9f26a22_sample.pdf'),
-(28, 'Aditya  Padte', '0000000000', '2005-10-19', 'Male', 'Hey i am Aditya.', '67e53e2cd409f_download.jpg'),
-(30, 'Shu Na', '2222222222', '2025-03-08', 'Male', 'ishoud', '67e63eebd9dd4_sample.pdf'),
-(31, 'Test User', '0000000001', '2025-03-11', 'Male', 'dd', '67e6409a87563_sample.pdf');
+(28, 'Aditya  Padte', '0000000000', '2005-10-19', 'Male', 'Hey i am Aditya.', '67e53e2cd409f_download.jpg');
 
 -- --------------------------------------------------------
 
@@ -142,10 +140,7 @@ INSERT INTO `employee_educations` (`employee_id`, `education_id`) VALUES
 (27, 1),
 (27, 2),
 (27, 3),
-(28, 1),
-(30, 1),
-(30, 2),
-(31, 2);
+(28, 1);
 
 -- --------------------------------------------------------
 
@@ -239,9 +234,7 @@ INSERT INTO `employee_hobbies` (`employee_id`, `hobby_id`) VALUES
 (28, 1),
 (28, 2),
 (28, 3),
-(28, 5),
-(30, 7),
-(31, 6);
+(28, 5);
 
 -- --------------------------------------------------------
 
@@ -292,8 +285,8 @@ INSERT INTO `users` (`id`, `username`, `email`, `password`) VALUES
 (7, 'Radha Vishwakarma', 'Radha@gmail.com', '$2y$10$d34iDZPcD3ypk2vy3b40cOh9GVzvujy.2Hii6/tLYFi64HLSlPoK6'),
 (8, 'Mitali Rawat', 'Mitali@gmail.com', '$2y$10$1MT41SZKZcGjyspty7hum.t7p0YRu.75Q/FPLfM3tEWYs5wJHL2Pu'),
 (9, 'om Achrekar', 'om@gmail.com', '$2y$10$NhO9xjmeNHy7vRv6marHuOpNyyv2WyPjpFxFNKXHJcox/gwNBwO4C'),
-(15, 'test user', 'test@testmail.com', '$2y$10$LCUX9TFq7idl3uDPULeq.OJxu/k6dFa0mSvDiUqfy1ly0.4JGB6fa'),
-(16, 'Test user 1', 'test1@testmail.com', '$2y$10$x5jdDYEUep9OYZ0Q9LzRgeaXoNKBi4vCVI1CNIcWb6ku5OVcUsIsa');
+(21, 'Test user', 'testuser@testmail.com', '$2y$10$TOl2oWbTrNnLip3AeDOrBO1fYUpsfuRIKpS93wzOe0CGPp3hJqJjW'),
+(22, 'Test user2', 'testuser2@testmail.com', '$2y$10$ezXURF95kXeFhSv3rOOrne3OM3LMVdDiyGYb/kcGtca8naEogYDdq');
 
 --
 -- Indexes for dumped tables
@@ -354,7 +347,7 @@ ALTER TABLE `educations`
 -- AUTO_INCREMENT for table `employees`
 --
 ALTER TABLE `employees`
-  MODIFY `Eid` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=32;
+  MODIFY `Eid` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=44;
 
 --
 -- AUTO_INCREMENT for table `hobbies`
@@ -366,7 +359,7 @@ ALTER TABLE `hobbies`
 -- AUTO_INCREMENT for table `users`
 --
 ALTER TABLE `users`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=17;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=23;
 
 --
 -- Constraints for dumped tables
