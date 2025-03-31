@@ -5,17 +5,12 @@ The **Employee Management System** is a web-based application built using **PHP,
 
 ## Features
 - **Employee Registration & Management**: Add, edit, and delete employee records.
-- **Role-Based Authentication**: Admin and Employee login with different access levels.
-- **Attendance Tracking**: Record and monitor employee attendance.
-- **Payroll System**: Calculate salaries based on work hours and deductions.
-- **Department & Designation Management**: Categorize employees based on departments.
-- **Reports & Analytics**: Generate reports on employee performance and attendance.
 
 ## Technologies Used
 - **Frontend**: HTML, CSS, JavaScript
-- **Backend**: PHP (Core PHP or Laravel)
+- **Backend**: PHP (Core PHP)
 - **Database**: MySQL
-- **Libraries**: jQuery, Bootstrap
+- **Libraries**: jQuery, Bootstrap, fontawsome
 
 ## Installation
 ### Prerequisites
@@ -23,7 +18,6 @@ Ensure you have the following installed:
 - **XAMPP/WAMP** (for running PHP and MySQL)
 - **PHP 7+**
 - **MySQL Database**
-- **Composer** (if using Laravel framework)
 
 ### Setup Steps
 1. **Clone the repository**
@@ -35,9 +29,9 @@ Ensure you have the following installed:
    cd Employee_Mngmt_Sys_PHP
    ```
 3. **Import the database**
-   - Locate the `employee_mgmt.sql` file (if available) in the repository.
+   - Locate the `models/employeemgmt.sql` file (if available) in the repository.
    - Open **phpMyAdmin** and create a new database (e.g., `employee_mgmt`).
-   - Import the `employee_mgmt.sql` file into the newly created database.
+   - Import the `employeemgmt.sql` file into the newly created database.
 4. **Configure database connection**
    - Open `config.php` and update the database credentials:
      ```php
@@ -53,11 +47,7 @@ Ensure you have the following installed:
 ## Usage
 1. **Admin Login**:
    - Use default admin credentials (if provided in `config.php`).
-   - Manage employees, attendance, and payroll from the admin panel.
-2. **Employee Login**:
-   - Employees can log in to view their attendance and salary details.
-3. **Generate Reports**:
-   - View attendance and payroll reports for different periods.
+   - Manage employees.
 
 ## Contributing
 1. Fork the repository.
