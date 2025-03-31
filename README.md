@@ -38,7 +38,7 @@ Ensure you have the following installed:
      $servername = "localhost";
      $username = "root";  // Change if necessary
      $password = "";      // Change if necessary
-     $dbname = "employee_mgmt";
+     $dbname = "employeemngmtsys";
      ```
 5. **Start the server**
    - Open XAMPP/WAMP and start **Apache** & **MySQL**.
