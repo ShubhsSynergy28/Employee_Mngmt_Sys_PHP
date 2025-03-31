@@ -4,7 +4,7 @@ class EmployeeController{
 
     public function CreateEmployee() {
         function toProperSentenceCase($text) {
-            $text = strtolower($text);
+            $text = strtolower(trim($text));
             return ucfirst($text);
         }
         
@@ -16,8 +16,8 @@ class EmployeeController{
         global $notification, $notificationClass, $conn;
         
         if ($_SERVER["REQUEST_METHOD"] == "POST") {
-            // Validate all inputs first
-            if (empty($_POST['firstname'])) {
+         
+            if (empty(trim($_POST['firstname']))) {
                 $notification = "First Name is required";
                 $notificationClass = "error";
                 $errors[] = "First name error";
@@ -27,7 +27,7 @@ class EmployeeController{
                 $errors[] = "First name numbers error";
             }
             
-            if (empty($_POST['lastname'])) {
+            if (empty(trim($_POST['lastname']))) {
                 $notification = "Last Name is required";
                 $notificationClass = "error";
                 $errors[] = "Last name error";
@@ -37,7 +37,7 @@ class EmployeeController{
                 $errors[] = "Last name numbers error";
             }
             
-            if (empty($_POST['phone'])) {
+            if (empty(trim($_POST['phone']))) {
                 $notification = "Phone Number is required";
                 $notificationClass = "error";
                 $errors[] = "Phone empty error";

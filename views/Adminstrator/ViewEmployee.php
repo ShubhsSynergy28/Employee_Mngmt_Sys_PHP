@@ -1,10 +1,6 @@
 <?php
 session_start();
-if (!isset($_SESSION['user_id'])) {
-    header("Location: ../../views/Auth/login.php");
-    exit();
-}
-
+require '../../utils/getLoginstatus.php';
 include '../../config/config.php';
 include '../../controllers/EmployeeController.php';
 

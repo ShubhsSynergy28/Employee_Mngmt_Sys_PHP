@@ -12,6 +12,13 @@ class AuthController {
             $password = $_POST['reg_password'];
             $passwordConf = $_POST['reg_passwordConf'];
 
+            //CHECK IF FIELDS ARE EMPTY
+            if(empty($username) || empty($email) || empty($password) || empty($passwordConf)) {
+                $notification = "All fields are required";
+                $notificationClass = "error";
+                return;
+            }
+
             // Validate email
             if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
                 $notification = "Invalid email format";

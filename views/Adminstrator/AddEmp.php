@@ -1,16 +1,12 @@
 <?php
 session_start();
-if (!isset($_SESSION['user_id'])) {
-    header("Location: ../../views/Auth/login.php");
-    exit();
-}
+require '../../utils/getLoginstatus.php';
 
-// Include the database configuration
 include '../../config/config.php';
 include '../../controllers/EmployeeController.php';
 include '../Components/Notification.php';
 
-// Store submitted values if they exist
+
 $submittedValues = [
     'firstname' => $_POST['firstname'] ?? '',
     'lastname' => $_POST['lastname'] ?? '',
@@ -31,7 +27,7 @@ $submittedValues = [
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <title>Add Employee</title>
         <link rel="stylesheet" href="../../assets/Styles/AddEmp.css">
-        <!-- Add these to your <head> section -->
+        
             <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
             <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/select2-bootstrap-5-theme@1.3.0/dist/select2-bootstrap-5-theme.min.css" />
         </head>
@@ -50,10 +46,10 @@ $submittedValues = [
         <label>Education:</label>
         <div class="checkbox-group">
             <?php
-            // Fetch education levels from database
+          
             include '../../utils/FetchEdu.php';
             
-            // Add this script to check previously selected education options
+          
             echo '<script>document.addEventListener("DOMContentLoaded", function() {';
             foreach ($submittedValues['education'] as $eduId) {
                 echo 'if(document.querySelector("input[name=\'education[]\'][value=\'' . $eduId . '\']")) {';
@@ -111,7 +107,7 @@ $submittedValues = [
             width: '100%'
         });
         
-        // Set previously selected hobbies
+      
         var selectedHobbies = <?= json_encode($submittedValues['hobbies']) ?>;
         $('#hobbies').val(selectedHobbies).trigger('change');
     });

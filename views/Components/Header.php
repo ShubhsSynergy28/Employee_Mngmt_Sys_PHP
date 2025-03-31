@@ -17,8 +17,6 @@
             </a>
             <nav>
                 <ul>
-                    <!-- <li><a href="../../index.php"><i class="fas fa-home"></i> Home</a></li>
-                    <li><a href="../../views/Employees/index.php"><i class="fas fa-users"></i> Employees</a></li> -->
                     <li>
                     <form action="../../controllers/AuthController.php" method="post">
         <input type="hidden" name="action" value="logout">
@@ -32,6 +30,5 @@
         </div>
     </header>
 
-    <!-- <script src="../../assets/Scripts/LogoutScript.js"></script> -->
 </body>
 </html>
