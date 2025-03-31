@@ -18,8 +18,8 @@
 }
 
 .file-download-link:hover {
-    color: grey;
-    /* text-decoration: underline; */
+    color: blue;
+    text-decoration: underline;
 }
 
 .file-download-link i {

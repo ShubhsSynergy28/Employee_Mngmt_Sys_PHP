@@ -7,9 +7,10 @@ if (isset($_SESSION['notification'])) {
     unset($_SESSION['notification']);
     unset($_SESSION['notificationClass']);
 }
-include '../Components/Notification.php';
+// include '../Components/Notification.php';
 include '../../config/config.php';
-include '../../controllers/EmployeeController.php';$currentPage = isset($_GET['page']) ? max(1, (int)$_GET['page']) : 1;
+include '../../controllers/EmployeeController.php';
+$currentPage = isset($_GET['page']) ? max(1, (int)$_GET['page']) : 1;
 $recordsPerPage = isset($_GET['per_page']) ? (int)$_GET['per_page'] : 5;
 $multiplier = $currentPage - 1; 
 
@@ -28,12 +29,14 @@ $totalPages = ceil($totalRecords / $recordsPerPage);
     <link rel="stylesheet" href="../../assets/Styles/dashboard.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link rel="stylesheet" href="../../assets/Styles/Header.css">
+    <link rel="stylesheet" href="../../assets/Styles/Notification.css">
 </head>
 <body>
     <?php include '../Components/Header.php'; ?>
     <?php include '../Components/Notification.php'; ?>
     <div class="dashboard-container">
-      
+        
         <div class="user-info animate__animated animate__fadeIn">
             <div>
                 <span><i class="fas fa-user"></i> Welcome, <?= htmlspecialchars($_SESSION['username'] ?? 'User') ?></span>
@@ -79,7 +82,7 @@ $totalPages = ceil($totalRecords / $recordsPerPage);
                                     <a href="EditEmployee.php?id=<?= $employee['Eid'] ?>" class="action-btn edit-btn" title="Edit">
                                         <i class="fas fa-edit"></i>
                                     </a>
-                                    <a href="../../utils/DeleteEmployee.php?id=<?= $employee['Eid'] ?>" class="action-btn delete-btn" title="Delete" onclick="return confirm('Are you sure you want to delete this employee?');">
+                                    <a href="../../utils/DeleteEmployee.php?id=<?= $employee['Eid'] ?>" class="action-btn delete-btn" title="Delete" >
                                         <i class="fas fa-trash"></i>
                                     </a>
                                 </div>
@@ -90,15 +93,15 @@ $totalPages = ceil($totalRecords / $recordsPerPage);
                         <tr>
                             <td colspan="8" style="text-align: center;">No employees found</td>
                         </tr>
-                    <?php endif; ?>
-                </tbody>
-            </table>
-        </div>
-        
-   
-        <div class="pagination animate__animated animate__fadeInUp">
-            <div class="table-controls">
-                <div class="records-per-page">
+                        <?php endif; ?>
+                    </tbody>
+                </table>
+            </div>
+            
+            
+            <div class="pagination animate__animated animate__fadeInUp">
+                <div class="table-controls">
+                    <div class="records-per-page">
                     <span>Show</span>
                     <select id="recordsPerPage" onchange="updateRecordsPerPage(this.value)">
                         <option value="5" <?= $recordsPerPage == 5 ? 'selected' : '' ?>>5</option>
@@ -122,11 +125,11 @@ $totalPages = ceil($totalRecords / $recordsPerPage);
                 for ($i = $startPage; $i <= $endPage; $i++): ?>
                     <a href="?page=<?= $i ?>&per_page=<?= $recordsPerPage ?>" 
                        class="<?= $i == $currentPage ? 'active' : '' ?>">
-                        <?= $i ?>
+                       <?= $i ?>
                     </a>
-                <?php endfor; ?>
+                    <?php endfor; ?>
                 
-                <?php if ($currentPage < $totalPages): ?>
+                    <?php if ($currentPage < $totalPages): ?>
                     <a href="?page=<?= $currentPage+1 ?>&per_page=<?= $recordsPerPage ?>"><i class="fas fa-angle-right"></i></a>
                     <a href="?page=<?= $totalPages ?>&per_page=<?= $recordsPerPage ?>"><i class="fas fa-angle-double-right"></i></a>
                 <?php endif; ?>
@@ -135,6 +138,7 @@ $totalPages = ceil($totalRecords / $recordsPerPage);
     </div>
     
     <script src="../../assets/Scripts/Dashboard.js"></script>      
-    </script>
+    <script src="../../assets/Scripts/NotificationScript.js"></script>
+</script>
 </body>
 </html>

@@ -31,6 +31,8 @@ if (isset($_GET['id'])) {
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="stylesheet" href="../../assets/Styles/dashboard.css">
     <link rel="stylesheet" href="../../assets/Styles/ViewEmployee.css">
+    <link rel="stylesheet" href="../../assets/Styles/Header.css">
+    <link rel="stylesheet" href="../../assets/Styles/Notification.css">
 </head>
 <body>
     <?php include '../Components/Header.php'; ?>
@@ -40,44 +42,44 @@ if (isset($_GET['id'])) {
             <div class="notification <?= htmlspecialchars($notificationClass) ?>">
                 <?= htmlspecialchars($notification) ?>
             </div>
-        <?php endif; ?>
-        
-        <h1>Employee Details</h1>
-        
-        <?php if ($employee): ?>
-            <div class="employee-details-container">
-                <div class="detail-row">
-                    <div class="detail-label">Employee ID:</div>
-                    <div class="detail-value"><?= htmlspecialchars($employee['Eid']) ?></div>
-                </div>
-                
-                <div class="detail-row">
-                    <div class="detail-label">Full Name:</div>
-                    <div class="detail-value"><?= htmlspecialchars($employee['EName']) ?></div>
-                </div>
-                
-                <div class="detail-row">
-                    <div class="detail-label">Phone Number:</div>
-                    <div class="detail-value"><?= htmlspecialchars($employee['Ephone']) ?></div>
-                </div>
-                
-                <div class="detail-row">
-                    <div class="detail-label">Birth Date:</div>
-                    <div class="detail-value"><?= date('M d, Y', strtotime($employee['Ebirth_date'])) ?></div>
-                </div>
-                
-                <div class="detail-row">
-                    <div class="detail-label">Gender:</div>
-                    <div class="detail-value"><?= htmlspecialchars($employee['Egender']) ?></div>
-                </div>
-                
-                <div class="detail-row">
-                    <div class="detail-label">Education:</div>
-                    <div class="detail-value"><?= htmlspecialchars($employee['education'] ?? 'N/A') ?></div>
-                </div>
-                
-                <div class="detail-row">
-                    <div class="detail-label">Hobbies:</div>
+            <?php endif; ?>
+            
+            <h1>Employee Details</h1>
+            
+            <?php if ($employee): ?>
+                <div class="employee-details-container">
+                    <div class="detail-row">
+                        <div class="detail-label">Employee ID:</div>
+                        <div class="detail-value"><?= htmlspecialchars($employee['Eid']) ?></div>
+                    </div>
+                    
+                    <div class="detail-row">
+                        <div class="detail-label">Full Name:</div>
+                        <div class="detail-value"><?= htmlspecialchars($employee['EName']) ?></div>
+                    </div>
+                    
+                    <div class="detail-row">
+                        <div class="detail-label">Phone Number:</div>
+                        <div class="detail-value"><?= htmlspecialchars($employee['Ephone']) ?></div>
+                    </div>
+                    
+                    <div class="detail-row">
+                        <div class="detail-label">Birth Date:</div>
+                        <div class="detail-value"><?= date('M d, Y', strtotime($employee['Ebirth_date'])) ?></div>
+                    </div>
+                    
+                    <div class="detail-row">
+                        <div class="detail-label">Gender:</div>
+                        <div class="detail-value"><?= htmlspecialchars($employee['Egender']) ?></div>
+                    </div>
+                    
+                    <div class="detail-row">
+                        <div class="detail-label">Education:</div>
+                        <div class="detail-value"><?= htmlspecialchars($employee['education'] ?? 'N/A') ?></div>
+                    </div>
+                    
+                    <div class="detail-row">
+                        <div class="detail-label">Hobbies:</div>
                     <div class="detail-value"><?= htmlspecialchars($employee['hobbies'] ?? 'N/A') ?></div>
                 </div>
                 
@@ -95,26 +97,27 @@ if (isset($_GET['id'])) {
                         
                         if (in_array($fileExtension, ['jpg', 'jpeg', 'png', 'gif'])): ?>
                             <img src="<?= htmlspecialchars($filePath) ?>" alt="Employee Document">
-                        <?php elseif ($fileExtension === 'pdf'): ?>
-                            <embed src="<?= htmlspecialchars($filePath) ?>" type="application/pdf" width="100%" height="500px">
-                        <?php else: ?>
-                            <a href="<?= htmlspecialchars($filePath) ?>" download class="btn-primary">
-                                Download File
-                            </a>
-                        <?php endif; ?>
-                    </div>
-                <?php endif; ?>
-                
-                <a href="Dashboard.php" class="back-btn">
-                    <i class="fas fa-arrow-left"></i> Back to Dashboard
-                </a>
-            </div>
-        <?php else: ?>
-            <p>No employee data found.</p>
-            <a href="Dashboard.php" class="back-btn">
-                <i class="fas fa-arrow-left"></i> Back to Dashboard
-            </a>
-        <?php endif; ?>
-    </div>
-</body>
-</html>
+                            <?php elseif ($fileExtension === 'pdf'): ?>
+                                <embed src="<?= htmlspecialchars($filePath) ?>" type="application/pdf" width="100%" height="500px">
+                                <?php else: ?>
+                                    <a href="<?= htmlspecialchars($filePath) ?>" download class="btn-primary">
+                                        Download File
+                                    </a>
+                                    <?php endif; ?>
+                                </div>
+                                <?php endif; ?>
+                                
+                                <a href="Dashboard.php" class="back-btn">
+                                    <i class="fas fa-arrow-left"></i> Back to Dashboard
+                                </a>
+                            </div>
+                            <?php else: ?>
+                                <p>No employee data found.</p>
+                                <a href="Dashboard.php" class="back-btn">
+                                    <i class="fas fa-arrow-left"></i> Back to Dashboard
+                                </a>
+                                <?php endif; ?>
+                            </div>
+                            <script src="../../assets/Scripts/NotificationScript.js"></script>
+                        </body>
+                        </html>

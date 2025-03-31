@@ -4,6 +4,12 @@ if(isset($_SESSION['user_id'])) {
     header("Location: ../../views/Adminstrator/Dashboard.php");
     exit();
 }
+if (isset($_SESSION['notification'])) {
+    $notification = $_SESSION['notification'];
+    $notificationClass = $_SESSION['notificationClass'];
+    unset($_SESSION['notification']);
+    unset($_SESSION['notificationClass']);
+}
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -14,6 +20,7 @@ if(isset($_SESSION['user_id'])) {
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/4.3.1/reveal.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <link rel="stylesheet" href="../../assets/Styles/login.css">
+    <link rel="stylesheet" href="../../assets/Styles/Notification.css">
 </head>
 <body>
     <?php 
@@ -35,7 +42,7 @@ if(isset($_SESSION['user_id'])) {
                 <label for="log_password">Password</label>
                 <div style="position: relative;">
                     <input type="password" name="log_password" id="log_password" placeholder="Password" required>
-                    <i class="fas fa-eye" id="togglePassword" style="position: absolute; right: 10px; top: 40%; transform: translateY(-50%); cursor: pointer;"></i>
+                    <i class="fas fa-eye" id="togglePassword"></i>
                 </div>
                 
                 <button type="submit">Login <i class="fas fa-arrow-right"></i></button>
@@ -46,8 +53,9 @@ if(isset($_SESSION['user_id'])) {
             <p>&copy; <?php echo date('Y'); ?> Employee Management System</p>
         </div>
     </div>
-
+    
     <script src="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/4.3.1/reveal.min.js"></script>
     <script src="../../assets/Scripts/Login.js"></script>
+    <script src="../../assets/Scripts/NotificationScript.js"></script>
 </body>
 </html>

@@ -1,3 +1,10 @@
+<?php if (isset($_SESSION['notification'])) {
+    $notification = $_SESSION['notification'];
+    $notificationClass = $_SESSION['notificationClass'];
+    unset($_SESSION['notification']);
+    unset($_SESSION['notificationClass']);
+}?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -7,14 +14,17 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/4.3.1/reveal.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <link rel="stylesheet" href="../../assets/Styles/Register.css">
+    <link rel="stylesheet" href="../../assets/Styles/Notification.css">
 </head>
 <body>
     <?php 
     include '../../config/config.php';
     include '../../controllers/AuthController.php';
     include '../Components/Notification.php';
+    $AuthController = new AuthController();
+    $notification = isset($_SESSION['notification']) ? $_SESSION['notification'] : '';
     
-
+    
     $username = isset($_POST['reg_username']) ? htmlspecialchars($_POST['reg_username']) : '';
     $email = isset($_POST['reg_email']) ? htmlspecialchars($_POST['reg_email']) : '';
     ?>
@@ -37,7 +47,7 @@
                 <div class="input-group">
                     <i class="fas fa-lock input-icon"></i>
                     <input type="password" name="reg_password" id="reg_password" placeholder="Password" required>
-                    <i class="fas fa-eye" id="togglePassword" style="position: absolute; right: 15px; top: 50%; transform: translateY(-50%); cursor: pointer; color: #777;"></i>
+                    <i class="fas fa-eye" id="togglePassword"></i>
                 </div>
                 <div class="password-strength">
                     <div class="strength-meter" id="password-strength"></div>
@@ -46,7 +56,7 @@
                 <div class="input-group">
                     <i class="fas fa-lock input-icon"></i>
                     <input type="password" name="reg_passwordConf" id="reg_passwordConf" placeholder="Confirm Password" required>
-                    <i class="fas fa-eye" id="togglePasswordConf" style="position: absolute; right: 15px; top: 50%; transform: translateY(-50%); cursor: pointer; color: #777;"></i>
+                    <i class="fas fa-eye" id="togglePasswordConf"></i>
                 </div>
                 
                 <button type="submit">Register <i class="fas fa-arrow-right"></i></button>
@@ -54,11 +64,10 @@
             </form>
         </div>
     </div>
-
+    
     <script src="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/4.3.1/reveal.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/zxcvbn/4.4.2/zxcvbn.js"></script>
-    <script src="../../assets/Scripts/Register.js">
-      
-    </script>
+    <script src="../../assets/Scripts/Register.js"></script>
+<script src="../../assets/Scripts/NotificationScript.js"></script>
 </body>
 </html>

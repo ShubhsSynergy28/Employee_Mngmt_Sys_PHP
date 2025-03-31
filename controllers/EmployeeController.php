@@ -27,7 +27,7 @@ class EmployeeController{
                 $errors[] = "First name numbers error";
             }
             
-            if (empty(trim($_POST['lastname']))) {
+            elseif (empty(trim($_POST['lastname']))) {
                 $notification = "Last Name is required";
                 $notificationClass = "error";
                 $errors[] = "Last name error";
@@ -37,11 +37,11 @@ class EmployeeController{
                 $errors[] = "Last name numbers error";
             }
             
-            if (empty(trim($_POST['phone']))) {
+            elseif (empty(trim($_POST['phone']))) {
                 $notification = "Phone Number is required";
                 $notificationClass = "error";
                 $errors[] = "Phone empty error";
-            } elseif (!preg_match("/^[0-9]{10}$/", $_POST['phone'])) {
+            } elseif (!preg_match("/^[0-9]{10}$/", trim($_POST['phone']))) {
                 $notification = "Phone number must be 10 digits";
                 $notificationClass = "error";
                 $errors[] = "Phone format error";
@@ -55,6 +55,11 @@ class EmployeeController{
             }
             
             $hobbies = $_POST['hobbies'] ?? [];
+            if (count($hobbies) == 0) {
+                $notification = "Hobbies are required";
+                $notificationClass = "error";
+                $errors[] = "Hobbies error";
+            }
             $birthdate = $_POST['birthdate'];
             $Gender = $_POST['gender'];
             $Description = $_POST['description'];
@@ -109,7 +114,7 @@ class EmployeeController{
             // Only proceed with database operations if no errors
             if (empty($errors)) {
                 $EmployeeName = toProperSentenceCase($_POST['firstname']) . " " . toProperSentenceCase($_POST['lastname']);
-                $phnNO = $_POST['phone'];
+                $phnNO = trim($_POST['phone']);
                 
                 $conn->begin_transaction();
                 
@@ -141,8 +146,9 @@ class EmployeeController{
                     
                     // Commit transaction
                     $conn->commit();
-                    $notification = "Employee created successfully";
-                    $notificationClass = "success";
+                    $_SESSION['notification'] = "Employee created successfully";
+                    $_SESSION['notificationClass'] = "success";
+                    header("Location: Dashboard.php");
                 } catch (Exception $e) {
                     // Rollback on error
                     $conn->rollback();
@@ -440,7 +446,7 @@ if(strpos($_SERVER['REQUEST_URI'], 'AddEmp.php') !== false){
 }
 
 elseif (strpos($_SERVER['REQUEST_URI'], 'ViewEmployee.php') !== false && isset($_GET['id'])) {
-    // The view page will handle the display, no need to call controller here
+   
 }
 elseif (strpos($_SERVER['REQUEST_URI'], 'DeleteEmployee.php') !== false && isset($_GET['id'])) {
     $EmployeeController->DeleteEmployee((int)$_GET['id']);

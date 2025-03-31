@@ -1,13 +1,4 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Employee Management System</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link rel="stylesheet" href="../../assets/Styles/Header.css">
-</head>
-<body>
+
     <header>
         <div class="container">
             <a class="link-to=home-in-logo" href="http://localhost/Projects/Employee%20Management%20System/views/Adminstrator/Dashboard.php">
@@ -29,6 +20,3 @@
             </nav>
         </div>
     </header>
-
-</body>
-</html>

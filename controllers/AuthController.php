@@ -1,16 +1,19 @@
 <?php 
-session_start();
 // include '../config/config.php';
 
 class AuthController {
-
+    
     public function register(){
+        function containsNumbers($string) {
+            return preg_match('/[0-9]/', $string);
+        }
+        session_start();
         global $notification, $notificationClass, $conn;
         if ($_SERVER["REQUEST_METHOD"] == "POST") {
             $username = ucfirst(strtolower(trim($_POST['reg_username'])));
-            $email = $_POST['reg_email'];
-            $password = $_POST['reg_password'];
-            $passwordConf = $_POST['reg_passwordConf'];
+            $email = trim($_POST['reg_email']);
+            $password = trim($_POST['reg_password']);
+            $passwordConf = trim($_POST['reg_passwordConf']);
 
             //CHECK IF FIELDS ARE EMPTY
             if(empty($username) || empty($email) || empty($password) || empty($passwordConf)) {
@@ -19,8 +22,13 @@ class AuthController {
                 return;
             }
 
+            if(containsNumbers($username)) {
+                $notification = "Username should not contain numbers";
+                $notificationClass = "error";
+                return;
+            }
             // Validate email
-            if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
+            elseif (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
                 $notification = "Invalid email format";
                 $notificationClass = "error";
                 return;
@@ -52,9 +60,8 @@ class AuthController {
                 $hashedPassword = password_hash($password, PASSWORD_DEFAULT);
                 $sql = "INSERT INTO users (username, email, password) VALUES ('$username', '$email', '$hashedPassword')";
                 if ($conn->query($sql) === TRUE) {
-                    $notification = "User registered successfully";
-                    $notificationClass = "success";
-                    // Redirect to avoid resubmission
+                    $_SESSION['notification'] = "User $username registered successfully";
+                    $_SESSION['notificationClass'] = "success";
                     echo "<script>setTimeout(() => { window.location = 'login.php' }, 1000)</script>";
                     // header("Location: login.php?success=1");
                     exit();
@@ -87,8 +94,8 @@ class AuthController {
                 if (password_verify($password, $hashedPassword)) {
                     $_SESSION['user_id'] = $id;
                     $_SESSION['username'] = $username;
-                    $notification = "Login successful!";
-                    $notificationClass = "success";
+                    $_SESSION['notification'] = "Welcome $username!";
+                    $_SESSION['notificationClass'] = "success";
                     // Redirect to avoid resubmission
                     echo "<script>setTimeout(() => { window.location = '../Adminstrator/dashboard.php' }, 1000)</script>";
                     exit();
@@ -106,6 +113,7 @@ class AuthController {
     }
 
     function Logout(){
+        session_start();
         session_unset();
         session_destroy();
         header("Location: ../views/Auth/login.php");

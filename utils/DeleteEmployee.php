@@ -14,8 +14,8 @@ if (isset($_GET['id'])) {
     $employeeController = new EmployeeController();
     $result = $employeeController->DeleteEmployee($employeeId);
     
-    $_SESSION['notification'] = $notification ?? '';
-    $_SESSION['notificationClass'] = $notificationClass ?? '';
+    $_SESSION['notification'] = "Employee with ID $employeeId has been deleted successfully.";
+    $_SESSION['notificationClass'] ="success";
     header("Location: ../views/Adminstrator/Dashboard.php");
     exit();
 } else {
